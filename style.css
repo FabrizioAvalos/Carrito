@@ -402,6 +402,8 @@ h1 {
   color: var(--muted);
 }
 
+.hint { margin-top: 28px; }
+
 .last { margin-top: 12px; color: var(--ink); }
 
 /* Laptop y escritorio: título y botón en una fila, controles bajo la plataforma */
