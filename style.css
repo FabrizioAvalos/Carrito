@@ -10,6 +10,7 @@
   --stop: #d2453d;
   --stop-dark: #983029;
   --ok: #2e8b57;
+  --floor: #cfd8dd;
 }
 
 * { box-sizing: border-box; }
@@ -26,7 +27,7 @@ body {
 }
 
 .remote {
-  width: min(100%, 380px);
+  width: min(100%, 860px);
   padding: 24px;
   background: var(--panel);
   border: 2px solid var(--ink);
@@ -63,7 +64,9 @@ h1 {
 .status[data-state="on"] { color: var(--ink); }
 
 .connect {
+  display: block;
   width: 100%;
+  max-width: 360px;
   padding: 14px;
   border: 2px solid var(--ink);
   border-radius: 14px;
@@ -87,6 +90,192 @@ h1 {
   font-size: 0.9rem;
 }
 
+/* Motores a los lados de la plataforma */
+.arena {
+  display: grid;
+  grid-template-columns: 1fr 1.7fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.motor {
+  padding: 12px;
+  text-align: center;
+  border: 2px solid #b9c5cd;
+  border-radius: 18px;
+  background: var(--panel);
+  opacity: 0.55;
+  transition: opacity 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.motor.active {
+  opacity: 1;
+  border-color: var(--ink);
+  box-shadow: 0 4px 0 var(--steel-dark);
+}
+
+.motor h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.side {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.visual {
+  width: min(100%, 190px);
+  aspect-ratio: 6 / 5;
+  margin: 8px auto;
+}
+
+.motor-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Motor DC TT amarillo */
+.m-body { fill: var(--signal); stroke: var(--ink); stroke-width: 2; }
+.m-housing { fill: #d9a400; stroke: var(--ink); stroke-width: 2; }
+.m-plate { fill: #aeb8c0; stroke: var(--ink); stroke-width: 1.5; }
+.m-screw { fill: #cfd6db; stroke: var(--ink); stroke-width: 1.5; }
+.wire-r, .wire-k { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+.wire-r { stroke: var(--stop); }
+.wire-k { stroke: var(--ink); }
+
+/* Eje blanco que gira */
+.shaft { transform-box: fill-box; transform-origin: center; }
+.m-hub { fill: #f3efe2; stroke: var(--ink); stroke-width: 2; }
+.m-core { fill: #d8d2bf; stroke: var(--ink); stroke-width: 1.5; }
+.m-cross { stroke: var(--ink); stroke-width: 1.5; opacity: 0.35; }
+.m-mark { stroke: var(--ink); stroke-width: 3; stroke-linecap: round; }
+.m-dot { fill: var(--stop); }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Adelante gira en el sentido de las agujas del reloj, reversa al contrario */
+.motor.fwd .shaft { animation: spin 0.9s linear infinite; }
+.motor.rev .shaft { animation: spin 0.9s linear infinite reverse; }
+
+/* Flechas del sentido de giro */
+.arrow {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.arrow path {
+  fill: none;
+  stroke: var(--steel-dark);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.arrow polygon { fill: var(--steel-dark); }
+
+.motor.active .arrow { opacity: 1; }
+.motor.rev .arrow { transform: scaleX(-1); }
+
+.dir {
+  min-height: 1.5em;
+  margin: 0 0 8px;
+  font-weight: 500;
+}
+
+.pins {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pin {
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: #e4eaee;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pin.high {
+  background: var(--ok);
+  color: #fff;
+}
+
+/* Plataforma y carrito */
+.stage {
+  position: relative;
+  min-height: 260px;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background-color: var(--floor);
+  background-image:
+    linear-gradient(rgba(27, 39, 51, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27, 39, 51, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.car {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 92px;
+  margin: -46px 0 0 -36px;
+  will-change: transform;
+}
+
+.body {
+  position: absolute;
+  inset: 6px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: var(--steel);
+}
+
+.body::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 70%;
+  height: 14px;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  background: var(--signal);
+}
+
+.wheel {
+  position: absolute;
+  width: 14px;
+  height: 32px;
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  background: linear-gradient(#1b2733 50%, #5a6874 50%) 0 0 / 100% 16px;
+}
+
+.wheel.izq { left: 0; }
+.wheel.der { right: 0; }
+.wheel.del { top: 6px; }
+.wheel.tras { bottom: 6px; }
+
+@keyframes tread {
+  to { background-position-y: 16px; }
+}
+
+.wheel.fwd { animation: tread 0.3s linear infinite reverse; }
+.wheel.rev { animation: tread 0.3s linear infinite; }
+
+/* Botones de control */
 .pad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -95,7 +284,8 @@ h1 {
     "left stop right"
     ". down .";
   gap: 12px;
-  margin: 28px 0 24px;
+  max-width: 300px;
+  margin: 24px auto;
 }
 
 .key {
@@ -108,7 +298,6 @@ h1 {
   color: #fff;
   box-shadow: 0 6px 0 var(--steel-dark);
   cursor: pointer;
-  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -142,6 +331,7 @@ h1 {
   font-weight: 700;
 }
 
+/* El botón del comando activo queda hundido */
 .key:active:not(:disabled),
 .key.pressed {
   transform: translateY(4px);
@@ -166,6 +356,20 @@ h1 {
 
 .last { margin-top: 12px; color: var(--ink); }
 
+/* Pantallas angostas: plataforma arriba y los dos motores debajo */
+@media (max-width: 719px) {
+  .arena {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "stage stage"
+      "ma mb";
+  }
+  .stage { grid-area: stage; height: 240px; min-height: 0; }
+  .motor-a { grid-area: ma; }
+  .motor-b { grid-area: mb; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .key, .connect { transition: none; }
+  .key, .connect, .motor, .arrow { transition: none; }
+  .wheel.fwd, .wheel.rev, .motor.fwd .shaft, .motor.rev .shaft { animation: none; }
 }

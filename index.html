@@ -23,6 +23,91 @@
       Este navegador no admite Web Serial. Abre la página en Chrome o Edge desde una computadora.
     </p>
 
+    <div class="arena">
+      <!-- Motor A: lado izquierdo (IN1 e IN2) -->
+      <article class="motor motor-a" id="motorA" aria-label="Motor A, lado izquierdo">
+        <h2>Motor A</h2>
+        <p class="side">Lado izquierdo</p>
+        <div class="visual">
+          <svg class="motor-svg" viewBox="0 0 120 100" aria-hidden="true">
+            <path class="wire-r" d="M16 41 L4 33"/>
+            <path class="wire-k" d="M16 59 L4 67"/>
+            <rect class="m-plate" x="16" y="36" width="8" height="28" rx="2"/>
+            <rect class="m-housing" x="24" y="32" width="36" height="36" rx="5"/>
+            <rect class="m-body" x="86" y="14" width="12" height="8" rx="2"/>
+            <rect class="m-body" x="46" y="20" width="58" height="60" rx="9"/>
+            <circle class="m-screw" cx="57" cy="30" r="3"/>
+            <circle class="m-screw" cx="57" cy="70" r="3"/>
+            <g class="shaft">
+              <circle class="m-hub" cx="75" cy="50" r="14"/>
+              <line class="m-cross" x1="63" y1="50" x2="87" y2="50"/>
+              <circle class="m-core" cx="75" cy="50" r="6"/>
+              <line class="m-mark" x1="75" y1="50" x2="75" y2="39"/>
+              <circle class="m-dot" cx="75" cy="38" r="2.8"/>
+            </g>
+            <g class="arrow">
+              <path d="M75 26 A24 24 0 0 1 99 50"/>
+              <polygon points="92,48 106,48 99,62"/>
+              <path d="M75 74 A24 24 0 0 1 51 50"/>
+              <polygon points="44,52 58,52 51,38"/>
+            </g>
+          </svg>
+        </div>
+        <p class="dir" id="dirA">Detenido</p>
+        <div class="pins">
+          <span class="pin" id="in1" data-name="IN1">IN1: LOW</span>
+          <span class="pin" id="in2" data-name="IN2">IN2: LOW</span>
+        </div>
+      </article>
+
+      <!-- Plataforma con el carrito visto desde arriba -->
+      <div class="stage" id="stage" role="img" aria-label="Carrito visto desde arriba sobre la plataforma">
+        <div class="car" id="car">
+          <span class="wheel izq del"></span>
+          <span class="wheel izq tras"></span>
+          <span class="wheel der del"></span>
+          <span class="wheel der tras"></span>
+          <div class="body"></div>
+        </div>
+      </div>
+
+      <!-- Motor B: lado derecho (IN3 e IN4) -->
+      <article class="motor motor-b" id="motorB" aria-label="Motor B, lado derecho">
+        <h2>Motor B</h2>
+        <p class="side">Lado derecho</p>
+        <div class="visual">
+          <svg class="motor-svg" viewBox="0 0 120 100" aria-hidden="true">
+            <path class="wire-r" d="M16 41 L4 33"/>
+            <path class="wire-k" d="M16 59 L4 67"/>
+            <rect class="m-plate" x="16" y="36" width="8" height="28" rx="2"/>
+            <rect class="m-housing" x="24" y="32" width="36" height="36" rx="5"/>
+            <rect class="m-body" x="86" y="14" width="12" height="8" rx="2"/>
+            <rect class="m-body" x="46" y="20" width="58" height="60" rx="9"/>
+            <circle class="m-screw" cx="57" cy="30" r="3"/>
+            <circle class="m-screw" cx="57" cy="70" r="3"/>
+            <g class="shaft">
+              <circle class="m-hub" cx="75" cy="50" r="14"/>
+              <line class="m-cross" x1="63" y1="50" x2="87" y2="50"/>
+              <circle class="m-core" cx="75" cy="50" r="6"/>
+              <line class="m-mark" x1="75" y1="50" x2="75" y2="39"/>
+              <circle class="m-dot" cx="75" cy="38" r="2.8"/>
+            </g>
+            <g class="arrow">
+              <path d="M75 26 A24 24 0 0 1 99 50"/>
+              <polygon points="92,48 106,48 99,62"/>
+              <path d="M75 74 A24 24 0 0 1 51 50"/>
+              <polygon points="44,52 58,52 51,38"/>
+            </g>
+          </svg>
+        </div>
+        <p class="dir" id="dirB">Detenido</p>
+        <div class="pins">
+          <span class="pin" id="in3" data-name="IN3">IN3: LOW</span>
+          <span class="pin" id="in4" data-name="IN4">IN4: LOW</span>
+        </div>
+      </article>
+    </div>
+
     <section class="pad" aria-label="Controles de movimiento">
       <button class="key up" data-cmd="a" type="button" aria-label="Adelante" disabled>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
@@ -39,7 +124,7 @@
       </button>
     </section>
 
-    <p class="hint">Mantén presionado para mover y suelta para parar. Con teclado: flechas o W A S D, y la barra espaciadora para parar.</p>
+    <p class="hint">El carrito sigue en movimiento hasta que presiones Parar. Con teclado: flechas o W A S D, y la barra espaciadora para parar.</p>
     <p class="last">Último comando: <strong id="lastCmd">ninguno</strong></p>
   </main>
 
