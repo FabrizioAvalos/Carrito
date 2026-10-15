@@ -81,6 +81,25 @@ h1 {
 .connect:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--signal-dark); }
 .connect:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sim {
+  background: var(--panel);
+  box-shadow: 0 4px 0 #c5cfd6;
+}
+
+.sim[aria-pressed="true"] {
+  background: var(--ok);
+  color: #fff;
+  box-shadow: 0 4px 0 #1f6b41;
+}
+
+.sim:active { transform: translateY(3px); box-shadow: 0 1px 0 #c5cfd6; }
+
 .warning {
   margin: 12px 0 0;
   padding: 10px 12px;
@@ -189,6 +208,7 @@ h1 {
   font-weight: 500;
 }
 
+/* Pines IN como LEDs con su 1 o 0 */
 .pins {
   display: flex;
   flex-wrap: wrap;
@@ -201,7 +221,11 @@ h1 {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  font-size: 0; /* oculta el texto "IN1: LOW" del HTML */
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .pin::before {
@@ -222,6 +246,8 @@ h1 {
   font-weight: 500;
   color: var(--muted);
 }
+
+.pin.high { color: var(--ok); }
 
 .pin.high::before {
   background:
@@ -378,15 +404,61 @@ h1 {
 
 .last { margin-top: 12px; color: var(--ink); }
 
-/* Pantallas angostas: plataforma arriba y los dos motores debajo */
+/* Laptop y escritorio: título y botón en una fila, controles bajo la plataforma */
+@media (min-width: 720px) {
+  .remote {
+    width: min(100%, 1000px);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 16px;
+  }
+  .remote > * { grid-column: 1 / -1; }
+  .remote > header { grid-column: 1; grid-row: 1; margin-bottom: 0; }
+    .remote > .actions {
+    grid-column: 2;
+    grid-row: 1;
+    flex-direction: row;
+  }
+  .actions .connect {
+    width: auto;
+    max-width: none;
+    padding: 12px 22px;
+  }
+
+  .arena {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "ma stage mb"
+      "ma pad mb";
+    margin-top: 16px;
+  }
+  .motor { display: flex; flex-direction: column; justify-content: center; }
+  .motor-a { grid-area: ma; }
+  .motor-b { grid-area: mb; }
+  .stage { grid-area: stage; min-height: clamp(160px, 28dvh, 260px); }
+  .pad {
+    grid-area: pad;
+    width: clamp(170px, 30dvh, 250px);
+    max-width: none;
+    margin: 0 auto;
+    gap: 8px;
+  }
+}
+
+/* Celulares: plataforma, controles y motores en una columna */
 @media (max-width: 719px) {
+  .remote { padding: 16px; }
   .arena {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "stage stage"
+      "pad pad"
       "ma mb";
   }
-  .stage { grid-area: stage; height: 240px; min-height: 0; }
+  .stage { grid-area: stage; height: clamp(170px, 30dvh, 240px); min-height: 0; }
+  .pad { grid-area: pad; width: min(100%, 250px); max-width: none; margin: 4px auto; }
   .motor-a { grid-area: ma; }
   .motor-b { grid-area: mb; }
 }
