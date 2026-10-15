@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control del carrito</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="remote">
+    <header>
+      <h1>Control del carrito</h1>
+      <div class="status" id="status" data-state="off">
+        <span class="dot"></span><span id="statusText">Desconectado</span>
+      </div>
+    </header>
+
+    <button id="connectBtn" class="connect" type="button">Conectar al Arduino</button>
+    <p id="warning" class="warning" hidden>
+      Este navegador no admite Web Serial. Abre la página en Chrome o Edge desde una computadora.
+    </p>
+
+    <section class="pad" aria-label="Controles de movimiento">
+      <button class="key up" data-cmd="a" type="button" aria-label="Adelante" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+      </button>
+      <button class="key left" data-cmd="i" type="button" aria-label="Izquierda" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+      </button>
+      <button class="key stop" data-cmd="p" type="button" aria-label="Parar" disabled>Parar</button>
+      <button class="key right" data-cmd="d" type="button" aria-label="Derecha" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+      </button>
+      <button class="key down" data-cmd="r" type="button" aria-label="Reversa" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+      </button>
+    </section>
+
+    <p class="hint">Mantén presionado para mover y suelta para parar. Con teclado: flechas o W A S D, y la barra espaciadora para parar.</p>
+    <p class="last">Último comando: <strong id="lastCmd">ninguno</strong></p>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
