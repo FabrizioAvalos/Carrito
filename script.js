@@ -249,6 +249,3 @@ if ('serial' in navigator) {
     if (e.target === port) cleanup('Cable USB desconectado');
   });
 }
-
-// Estado inicial: motores detenidos y los cuatro LEDs en 0
-setMotion('p');
