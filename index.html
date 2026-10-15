@@ -129,7 +129,16 @@
     </div>
 
     <p class="hint">El carrito sigue en movimiento hasta que presiones Parar. Con teclado: flechas o W A S D, y la barra espaciadora para parar.</p>
-    <p class="last">Último comando: <strong id="lastCmd">ninguno</strong></p>
+    <section class="readout" aria-live="polite">
+      <div class="box">
+        <span class="label">Último comando</span>
+        <strong class="value" id="lastCmd">ninguno</strong>
+      </div>
+      <div class="box">
+        <span class="label">Letra enviada</span>
+        <strong class="value letter" id="lastLetter">-</strong>
+      </div>
+    </section>
   </main>
 
   <script src="script.js"></script>

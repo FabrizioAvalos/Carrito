@@ -7,15 +7,17 @@ const BAUD = 9600;
 const ARDUINO_RESET_MS = 2000; // el Arduino se reinicia al abrir el puerto serie
 
 const NAMES = { a: 'adelante', r: 'reversa', i: 'izquierda', d: 'derecha', p: 'parar' };
+// Letra que recibe el Arduino por cada comando (parar = S)
+const LETTERS = { a: 'A', r: 'R', i: 'I', d: 'D', p: 'S' };
 
 // Sentido de cada motor: [motor A (IN1, IN2), motor B (IN3, IN4)]
 // 1 = adelante, -1 = reversa, 0 = detenido. Coincide con los digitalWrite del Arduino.
 // Si en tu carrito real el giro sale al revés, intercambia los valores de 'i' y 'd'.
 const MOVES = {
-  a: [1, 1],
-  r: [-1, -1],
-  i: [-1, 1],
-  d: [1, -1],
+  a: [1, 1],   // A: IN1=1 IN2=0 | B: IN3=1 IN4=0
+  r: [-1, -1], // A: IN1=0 IN2=1 | B: IN3=0 IN4=1
+  i: [0, 1],   // solo IN3 en HIGH (gira el motor B)
+  d: [1, 0],   // solo IN1 en HIGH (gira el motor A)
   p: [0, 0]
 };
 
@@ -32,6 +34,7 @@ const simBtn = document.getElementById('simBtn');
 const statusEl = document.getElementById('status');
 const statusText = document.getElementById('statusText');
 const lastCmd = document.getElementById('lastCmd');
+const lastLetter = document.getElementById('lastLetter');
 const warning = document.getElementById('warning');
 const stage = document.getElementById('stage');
 const car = document.getElementById('car');
@@ -145,13 +148,15 @@ requestAnimationFrame(frame);
 async function send(cmd) {
   if ((!writer && !simMode) || cmd === current) return;
   current = cmd;
+  const letter = LETTERS[cmd]; // A, R, D, I, S
   lastCmd.textContent = NAMES[cmd];
+  lastLetter.textContent = letter;
   // El botón del comando activo queda hundido (excepto Parar)
   keys.forEach((k) => k.classList.toggle('pressed', k.dataset.cmd === cmd && cmd !== 'p'));
   setMotion(cmd);
   if (simMode) return; // en simulación no se envía nada al puerto serie
   try {
-    await writer.write(encoder.encode(cmd));
+    await writer.write(encoder.encode(letter));
   } catch (err) {
     await cleanup('Se perdió la conexión');
   }
@@ -192,7 +197,7 @@ async function connect() {
 }
 
 async function disconnect() {
-  try { await writer?.write(encoder.encode('p')); } catch (e) { /* sin conexión */ }
+  try { await writer?.write(encoder.encode('S')); } catch (e) { /* sin conexión */ }
   await cleanup();
 }
 
@@ -240,8 +245,8 @@ window.addEventListener('keydown', (e) => {
 });
 
 // Seguridad: si la pestaña se oculta o se cierra, el carrito se detiene.
-window.addEventListener('pagehide', () => send('p'));
-document.addEventListener('visibilitychange', () => { if (document.hidden) send('p'); });
+window.addEventListener('pagehide', () => send('S'));
+document.addEventListener('visibilitychange', () => { if (document.hidden) send('S'); });
 
 // Si se desenchufa el cable USB.
 if ('serial' in navigator) {

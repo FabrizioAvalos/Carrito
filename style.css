@@ -465,6 +465,69 @@ h1 {
   .motor-b { grid-area: mb; }
 }
 
+/* Panel grande: último comando y letra enviada */
+.readout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.readout .box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: 0 4px 0 #c5cfd6;
+}
+
+.readout .label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.readout .value {
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: capitalize;
+}
+
+.readout .letter {
+  min-width: 1.6em;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: var(--signal);
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  text-align: center;
+  text-transform: none;
+}
+
+/* Letra en cada botón de control */
+.key { position: relative; }
+
+.key::after {
+  content: attr(data-cmd);
+  text-transform: uppercase;
+  position: absolute;
+  top: 8px;
+  right: 11px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.stop::after { content: "S"; top: 14%; right: 18%; }
+
 @media (prefers-reduced-motion: reduce) {
   .key, .connect, .motor, .arrow { transition: none; }
   .wheel.fwd, .wheel.rev, .motor.fwd .shaft, .motor.rev .shaft { animation: none; }
