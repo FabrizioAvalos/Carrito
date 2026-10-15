@@ -18,7 +18,10 @@
       </div>
     </header>
 
-    <button id="connectBtn" class="connect" type="button">Conectar al Arduino</button>
+    <div class="actions">
+      <button id="connectBtn" class="connect" type="button">Conectar al Arduino</button>
+      <button id="simBtn" class="connect sim" type="button" aria-pressed="false">Modo simulación</button>
+    </div>
     <p id="warning" class="warning" hidden>
       Este navegador no admite Web Serial. Abre la página en Chrome o Edge desde una computadora.
     </p>
@@ -55,8 +58,8 @@
         </div>
         <p class="dir" id="dirA">Detenido</p>
         <div class="pins">
-          <span class="pin" id="in1" data-name="IN1">IN1: LOW</span>
-          <span class="pin" id="in2" data-name="IN2">IN2: LOW</span>
+          <span class="pin" id="in1" data-name="IN1">0</span>
+          <span class="pin" id="in2" data-name="IN2">0</span>
         </div>
       </article>
 
@@ -70,6 +73,23 @@
           <div class="body"></div>
         </div>
       </div>
+
+      <!-- Controles -->
+      <section class="pad" aria-label="Controles de movimiento">
+        <button class="key up" data-cmd="a" type="button" aria-label="Adelante" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </button>
+        <button class="key left" data-cmd="i" type="button" aria-label="Izquierda" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </button>
+        <button class="key stop" data-cmd="p" type="button" aria-label="Parar" disabled>Parar</button>
+        <button class="key right" data-cmd="d" type="button" aria-label="Derecha" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </button>
+        <button class="key down" data-cmd="r" type="button" aria-label="Reversa" disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
+        </button>
+      </section>
 
       <!-- Motor B: lado derecho (IN3 e IN4) -->
       <article class="motor motor-b" id="motorB" aria-label="Motor B, lado derecho">
@@ -102,27 +122,11 @@
         </div>
         <p class="dir" id="dirB">Detenido</p>
         <div class="pins">
-          <span class="pin" id="in3" data-name="IN3">IN3: LOW</span>
-          <span class="pin" id="in4" data-name="IN4">IN4: LOW</span>
+          <span class="pin" id="in3" data-name="IN3">0</span>
+          <span class="pin" id="in4" data-name="IN4">0</span>
         </div>
       </article>
     </div>
-
-    <section class="pad" aria-label="Controles de movimiento">
-      <button class="key up" data-cmd="a" type="button" aria-label="Adelante" disabled>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
-      </button>
-      <button class="key left" data-cmd="i" type="button" aria-label="Izquierda" disabled>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
-      </button>
-      <button class="key stop" data-cmd="p" type="button" aria-label="Parar" disabled>Parar</button>
-      <button class="key right" data-cmd="d" type="button" aria-label="Derecha" disabled>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
-      </button>
-      <button class="key down" data-cmd="r" type="button" aria-label="Reversa" disabled>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7"/></svg>
-      </button>
-    </section>
 
     <p class="hint">El carrito sigue en movimiento hasta que presiones Parar. Con teclado: flechas o W A S D, y la barra espaciadora para parar.</p>
     <p class="last">Último comando: <strong id="lastCmd">ninguno</strong></p>
