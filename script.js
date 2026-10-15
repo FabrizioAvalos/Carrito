@@ -89,8 +89,8 @@ function setWheels(wheels, dir) {
 }
 
 function setPin(el, high) {
-  el.textContent = `${el.dataset.name}: ${high ? 'HIGH' : 'LOW'}`;
   el.classList.toggle('high', high);
+  el.setAttribute('aria-label', `${el.dataset.name}: ${high ? 'HIGH' : 'LOW'}`);
 }
 
 // Muestra el estado de un motor: llanta girando, flecha y pines del puente H.
