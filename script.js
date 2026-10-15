@@ -28,6 +28,7 @@ const KEYMAP = {
 };
 
 const connectBtn = document.getElementById('connectBtn');
+const simBtn = document.getElementById('simBtn');
 const statusEl = document.getElementById('status');
 const statusText = document.getElementById('statusText');
 const lastCmd = document.getElementById('lastCmd');
@@ -53,6 +54,7 @@ const motorB = {
 let port = null;
 let writer = null;
 let current = null; // último comando enviado
+let simMode = false; // true = simulación sin Arduino
 
 if (!('serial' in navigator)) {
   warning.hidden = false;
@@ -88,12 +90,14 @@ function setWheels(wheels, dir) {
   });
 }
 
+// Cada pin se muestra como un LED con un 1 (HIGH) o un 0 (LOW)
 function setPin(el, high) {
+  el.textContent = high ? '1' : '0';
   el.classList.toggle('high', high);
   el.setAttribute('aria-label', `${el.dataset.name}: ${high ? 'HIGH' : 'LOW'}`);
 }
 
-// Muestra el estado de un motor: llanta girando, flecha y pines del puente H.
+// Muestra el estado de un motor: eje girando, flecha y pines del puente H.
 function updateMotor(motor, dir) {
   motor.card.classList.toggle('active', dir !== 0);
   motor.card.classList.toggle('fwd', dir > 0);
@@ -139,12 +143,13 @@ requestAnimationFrame(frame);
 /* ---------- Envío de comandos ---------- */
 
 async function send(cmd) {
-  if (!writer || cmd === current) return;
+  if ((!writer && !simMode) || cmd === current) return;
   current = cmd;
   lastCmd.textContent = NAMES[cmd];
   // El botón del comando activo queda hundido (excepto Parar)
   keys.forEach((k) => k.classList.toggle('pressed', k.dataset.cmd === cmd && cmd !== 'p'));
   setMotion(cmd);
+  if (simMode) return; // en simulación no se envía nada al puerto serie
   try {
     await writer.write(encoder.encode(cmd));
   } catch (err) {
@@ -193,9 +198,32 @@ async function disconnect() {
 
 connectBtn.addEventListener('click', async () => {
   connectBtn.disabled = true;
+  simBtn.disabled = true;
   if (port) await disconnect(); else await connect();
   connectBtn.disabled = !('serial' in navigator);
+  simBtn.disabled = !!port;
 });
+
+/* ---------- Modo simulación (sin Arduino) ---------- */
+
+function startSim() {
+  simMode = true;
+  simBtn.textContent = 'Salir de la simulación';
+  simBtn.setAttribute('aria-pressed', 'true');
+  connectBtn.disabled = true;
+  setStatus('on', 'Modo simulación (sin Arduino)');
+  setControls(true);
+}
+
+async function stopSim() {
+  simMode = false;
+  simBtn.textContent = 'Modo simulación';
+  simBtn.setAttribute('aria-pressed', 'false');
+  connectBtn.disabled = !('serial' in navigator);
+  await cleanup();
+}
+
+simBtn.addEventListener('click', () => (simMode ? stopSim() : startSim()));
 
 /* ---------- Botones y teclado ---------- */
 
@@ -221,3 +249,6 @@ if ('serial' in navigator) {
     if (e.target === port) cleanup('Cable USB desconectado');
   });
 }
+
+// Estado inicial: motores detenidos y los cuatro LEDs en 0
+setMotion('p');
